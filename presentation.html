@@ -1,0 +1,151 @@
+<html lang="en">
+    <head>
+        <title>webdev.legnica #1: behat</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+
+        <style>
+            html {
+                background: Black url("https://www.toptal.com/designers/subtlepatterns/patterns/greyzz.png");
+            }
+
+            * {
+                overflow: hidden;
+            }
+
+            .handwritten {
+                font-family: "Gloria Hallelujah", cursive;
+            }
+
+            .slide-enter-active, .slide-leave-active {
+                transition: opacity 1s, transform 1s;
+            }
+
+            .slide-leave-to {
+                opacity: 0;
+                transform: translateY(-50%);
+            }
+
+            .slide-enter {
+                opacity: 0;
+                transform: translateY(50%);
+            }
+
+            .subslide-enter-active, .subslide-leave-active {
+                transition: opacity 1s, transform 1s;
+            }
+
+            .subslide-leave-to {
+                opacity: 0;
+                transform: translateX(-50%);
+            }
+
+            .subslide-enter {
+                opacity: 0;
+                transform: translateX(50%);
+            }
+        </style>
+    </head>
+    <body class="w-full h-full">
+        <div id="presentation" class="w-full h-full flex p-4">
+            <div class="w-1/6">
+                <ul>
+                    <li class="m-1 border-r-2 text-right pr-4 cursor-pointer" v-for="(section, index) in sections"
+                        :class="{ 'opacity-25': index !== currentSlide[0] }" @click="setCurrentSection(index)">
+                        {{ section }}
+                    </li>
+                </ul>
+            </div>
+            <div class="w-full">
+                <slide :show="currentSlide[0] === 0">
+                    <div class="text-2xl handwritten opacity-50">prezentacja webdev.legnica #1</div>
+                    <div class="text-6xl mt-32">Wierszyki i ogórki</div>
+                    <div class="text-3xl">wstęp do Behata</div>
+                    <div class="text mt-32 opacity-50">autor prezentacji</div>
+                    <div class="text-2xl handwritten">Krzysztof Rewak</div>
+                </slide>
+                <slide :show="currentSlide[0] === 1">
+                    <slide :show="currentSlide[1] === 0" transition="subslide">
+                        <div class="text-3xl handwritten">Czy każdy wie czym jest?</div>
+                        <div class="text-6xl">Test-driven development</div>
+                    </slide>
+                    <slide :show="currentSlide[1] === 1" transition="subslide">
+                        <div class="text-3xl handwritten">idea jest prosta</div>
+                        <div class="text-5xl mt-12 handwritten">testy -> kodowanie -> refaktor</div>
+                    </slide>
+                    <slide :show="currentSlide[1] === 2" transition="subslide">
+                    </slide>
+                </slide>
+            </div>
+        </div>
+    </body>
+    <script>
+        Vue.component("slide", {
+            props: {
+                show: {
+                    type: Boolean,
+                    default: false,
+                },
+                transition: {
+                    type: String,
+                    default: "slide",
+                },
+            },
+            template: '<transition :name="transition" mode="out-in">' +
+                '<div class="w-full h-full flex flex-col justify-center content-center text-center" v-if="show"><slot></slot></div>' +
+                '</transition>'
+        })
+
+        new Vue({
+            el: "#presentation",
+            data() {
+                return {
+                    sections: [
+                        "Wprowadzenie",
+                        "Test-driven development",
+                        "Behaviour-driven development",
+                        "Język gherkin",
+                        "Behat: Idea",
+                        "Behat: Instalacja",
+                        "Behat: Implementacja",
+                        "Behat: Przypadki użycia",
+                        "Podsumowanie",
+                    ],
+                    currentSlideIndex: 2,
+                    order: [
+                        [0, 0],
+                        [1, 0],
+                        [1, 1],
+                        [1, 2],
+                    ],
+                }
+            },
+            computed: {
+                currentSlide() {
+                    return this.order[this.currentSlideIndex]
+                }
+            },
+            mounted() {
+                window.addEventListener('keyup', event => {
+                    if (event.key === " ") {
+                        this.changeSlide()
+                    }
+                })
+            },
+            methods: {
+                setCurrentSection(index) {
+                    for (i = 0; i < this.order.length; i++) {
+                        if (this.order[i][0] === index) {
+                            break;
+                        }
+                    }
+                    this.currentSlideIndex = i
+                },
+                changeSlide() {
+                    this.currentSlideIndex++
+                },
+            }
+        })
+    </script>
+</html>
