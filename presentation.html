@@ -540,6 +540,24 @@ Scenario: Unauthorized user wants to update its profile
 				<slide :show="subsection(7, 0)" transition="subslide">
 					<div class="text-6xl handwritten">podsumowując</div>
 				</slide>
+				<slide :show="subsection(7, 1)" transition="subslide">
+					<div class="text-4xl mb-16">minusy:</div>
+					<li class="text-3xl m-2">trzeba ogarnąć Gherkina</li>
+					<li class="text-3xl m-2">trzeba zmusić klienta do nowego sposobu komunikacji</li>
+					<li class="text-3xl m-2">trzeba dbać o konteksty testów</li>
+					<i class="top right background red large minus circle icon"></i>
+				</slide>
+				<slide :show="subsection(7, 2)">
+					<div class="text-4xl mb-16">plusy:</div>
+					<li class="text-3xl m-2">wszystko jest przetestowane</li>
+					<li class="text-3xl m-2">wszystko jest udokumentowane</li>
+					<li class="text-3xl m-2">wiemy jak wszystko działa i wszystko działa tak jak chcemy</li>
+					<i class="top right background green large plus circle icon"></i>
+				</slide>
+
+				<slide :show="subsection(8, 0)">
+					<div class="really huge handwritten opacity-75">fin</div>
+				</slide>
 			</div>
 		</div>
 	</body>
@@ -627,6 +645,9 @@ Scenario: Unauthorized user wants to update its profile
 						[6, 4],
 						[6, 5],
 						[7, 0],
+						[7, 1],
+						[7, 2],
+						[8, 0],
 					],
 				}
 			},
@@ -647,7 +668,6 @@ Scenario: Unauthorized user wants to update its profile
 						this.currentSlideIndex = 0
 					}
 				})
-				this.currentSlideIndex = this.order.length - 1
 			},
 			methods: {
 				setCurrentSection(index) {
